@@ -7,7 +7,7 @@ Para hacer uso de esta sencilla aplicación debes clonar este repositorio y lueg
 ### Clonar este repositorio
 
 ```bash
-git clone https://github.com/angelguarox/login-roles-api.git
+git clone https://github.com/angelguarox/favorites-links-api.git
 ```
 
 #### Instala los paquetes

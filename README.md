@@ -20,9 +20,14 @@ npm install
 
 ### Ejecutar la aplicación
 
-Instalados los módulos necesarios, podrás ejecutar el servidor y toda la aplicación con el comando:
+Instalados los módulos necesarios, podrás ejecutar el servidor y toda la aplicación con el comando en modo de desarrollo:
 
 ```bash
 npm run dev
 ```
 
+Y en modo de producción, el comando:
+
+```bash
+npm start
+```

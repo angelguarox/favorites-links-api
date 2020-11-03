@@ -1,65 +1,8 @@
-const express = require('express');
-const morgan = require('morgan');
-const exphbs = require('express-handlebars');
-const path = require('path');
-const chalk = require('chalk');
-const flash = require('connect-flash');
-const session = require('express-session');
-const mysqlstore = require('express-mysql-session');
-const passport = require('passport');
-const helpers = require('./lib/handlebars');
-const routes = require('./routes/index');
-const auth = require('./routes/authentication');
-const links = require('./routes/links');
-const {database} = require('./keys');
+const app = require('./server/app');
+require('./database/database');
 
-// Initialization
-const app = express();
-require('./lib/passport');
-
-// Settings
-app.set('port', process.env.PORT || 5000);
-app.set('views', path.join(__dirname, 'views'));
-app.engine('.hbs', exphbs({
-	defaultLayout: 'main',
-	layoutsDir: path.join(app.get('views'), 'layouts'),
-	partialsDir: path.join(app.get('views'), 'partials'),
-	extname: '.hbs',
-	helpers: helpers
-}));
-app.set('view engine', '.hbs');
-
-// Middlewares
-app.use(session({
-	secret: 'favoriteslinkssession',
-	resave: false,
-	saveUninitialized: false,
-	store: new mysqlstore(database)
-}));
-app.use(morgan('dev'));
-app.use(express.urlencoded({extended: false}));
-app.use(express.json());
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Global variables
-app.use((req, res, next) => {
-	app.locals.success = req.flash('success');
-	app.locals.message = req.flash('message');
-	app.locals.user = req.user;
-	next();
-});
-
-// Routes
-app.use(routes);
-app.use(auth);
-app.use('/links', links);
-
-// Public
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Starting
-app.listen(app.get('port'), () => {
-	console.log(`${chalk.white('SERVER ON PORT: ', app.get('port'))}`);
-});
+(async () => {
+	await app.listen(app.get('port'), () => {
+	console.log('SERVER ON PORT:', app.get('port'));
+	});
+})();
